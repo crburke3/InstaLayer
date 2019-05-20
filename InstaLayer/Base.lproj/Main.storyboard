@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="InstaLayer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ImageGrid" translatesAutoresizingMaskIntoConstraints="NO" id="5dh-P4-v7m">
+                                <rect key="frame" x="0.0" y="20" width="375" height="373"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="5dh-P4-v7m" secondAttribute="height" multiplier="375:373" id="IC2-uQ-e7k"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gqe-5c-M2W" customClass="RoundView" customModule="InstaLayer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="dDV-wp-YFY">
+                                        <rect key="frame" x="81" y="247" width="213" height="173"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="173" id="4vs-RQ-TXm"/>
+                                            <constraint firstAttribute="width" constant="213" id="hxw-TJ-mbW"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="dDV-wp-YFY" firstAttribute="centerX" secondItem="gqe-5c-M2W" secondAttribute="centerX" id="Xpv-sK-MO4"/>
+                                    <constraint firstItem="dDV-wp-YFY" firstAttribute="centerY" secondItem="gqe-5c-M2W" secondAttribute="centerY" id="tkM-Ee-p6i"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" red="0.1256424189" green="0.218447119" blue="0.28920993210000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isHorizontal" value="NO"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.12564241886138916" green="0.21844711899757385" blue="0.28920993208885193" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="gqe-5c-M2W" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CSk-ID-sF6"/>
+                            <constraint firstItem="5dh-P4-v7m" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ECp-Fs-grK"/>
+                            <constraint firstItem="5dh-P4-v7m" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Faz-Cn-AK5"/>
+                            <constraint firstItem="gqe-5c-M2W" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MdH-S3-0sh"/>
+                            <constraint firstItem="gqe-5c-M2W" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="VBt-B1-l9g"/>
+                            <constraint firstItem="5dh-P4-v7m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZeH-bq-4u9"/>
+                            <constraint firstItem="gqe-5c-M2W" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="mz9-Sf-CPz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53.600000000000001" y="27.436281859070466"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="ImageGrid" width="385" height="374"/>
+        <image name="Logo" width="217" height="173"/>
+    </resources>
+</document>
