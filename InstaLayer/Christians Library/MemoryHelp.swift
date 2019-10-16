@@ -20,7 +20,7 @@ extension UIViewController{
         UserDefaults.standard.set(saveData, forKey: location)
     }
     
-    func saveString(str:String, location:SaveKeys){
+    func saveString(str:String?, location:SaveKeys){
         let saveData = NSKeyedArchiver.archivedData(withRootObject: str)
         UserDefaults.standard.set(saveData, forKey: location.rawValue)
     }
@@ -28,20 +28,20 @@ extension UIViewController{
     func loadString(ident:String)->String?{
         let decoded  = UserDefaults.standard.object(forKey: ident) as! Data?
         if(decoded != nil){
-            let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded!) as! String
-            return decodedTeams
-        }else{
-            return nil
+            if let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded!) as? String{
+                return decodedTeams
+            }
         }
+        return nil
     }
     
     func loadString(ident:SaveKeys)->String?{
         let decoded  = UserDefaults.standard.object(forKey: ident.rawValue) as! Data?
         if(decoded != nil){
-            let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded!) as! String
-            return decodedTeams
-        }else{
-            return nil
+            if let decodedTeams = NSKeyedUnarchiver.unarchiveObject(with: decoded!) as? String{
+                return decodedTeams
+            }
         }
+        return nil
     }
 }

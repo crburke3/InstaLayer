@@ -7,18 +7,67 @@
 //
 
 import UIKit
+import WebKit
+import SwiftyStoreKit
 
 var masterNav:UINavigationController!
+var masterBrowser = BotKit()
+var isPurchased:SubType = SubType.loading
+
+let monthlyPoductId = "FullMonthlyAccess"
+let sharedSecret = "8ad4af9a081947cfb899e36acf83707c"
+let followerPurchaseIds:Set<String> = ["100Followers"]
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+            for purchase in purchases {
+                switch purchase.transaction.transactionState {
+                case .purchased, .restored:
+                    isPurchased = .paid
+                    if purchase.needsFinishTransaction {
+                        // Deliver content from server, then:
+                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+                    }
+                // Unlock content
+                case .failed, .purchasing, .deferred:
+                    isPurchased = .unpaid
+                    break // do nothing
+                }
+            }
+        }
+        checkMonthlyPurchase()
         return true
+    }
+    
+    func checkMonthlyPurchase(){
+        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "8ad4af9a081947cfb899e36acf83707c")
+        SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
+            switch result {
+            case .success(let receipt):
+                let productId = "FullMonthlyAccess"
+                // Verify the purchase of Consumable or NonConsumable
+                let purchaseResult = SwiftyStoreKit.verifyPurchase(
+                    productId: productId,
+                    inReceipt: receipt)
+                
+                switch purchaseResult {
+                case .purchased(let receiptItem):
+                    isPurchased = .paid
+                    print("\(productId) is purchased: \(receiptItem)")
+                case .notPurchased:
+                    isPurchased = .unpaid
+                    print("The user has never purchased \(productId)")
+                }
+            case .error(let error):
+                print("Receipt verification failed: \(error)")
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

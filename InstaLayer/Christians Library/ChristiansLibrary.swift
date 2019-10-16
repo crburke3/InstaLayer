@@ -66,6 +66,87 @@ extension String {
             }
         }
     }
+    
+    func firstIndex(of word:String)->Int?{
+        var wordStart = 0
+        for letter in self{
+            if letter == word.first!{
+                
+                
+                var checkCount = wordStart
+                for i in word{
+                    if i != self[checkCount]{
+                        break
+                    }
+                    checkCount += 1
+                }
+                if (checkCount - wordStart) >= word.count - 1{
+                    return wordStart
+                }
+                
+                
+            }
+            wordStart += 1
+        }
+        return nil
+    }
+}
+
+extension String {
+    subscript (i: Int) -> Character {
+        return self[index(startIndex, offsetBy: i)]
+    }
+    subscript (bounds: CountableRange<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[start ..< end]
+    }
+    subscript (bounds: CountableClosedRange<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[start ... end]
+    }
+    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(endIndex, offsetBy: -1)
+        return self[start ... end]
+    }
+    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[startIndex ... end]
+    }
+    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[startIndex ..< end]
+    }
+}
+extension Substring {
+    subscript (i: Int) -> Character {
+        return self[index(startIndex, offsetBy: i)]
+    }
+    subscript (bounds: CountableRange<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[start ..< end]
+    }
+    subscript (bounds: CountableClosedRange<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[start ... end]
+    }
+    subscript (bounds: CountablePartialRangeFrom<Int>) -> Substring {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(endIndex, offsetBy: -1)
+        return self[start ... end]
+    }
+    subscript (bounds: PartialRangeThrough<Int>) -> Substring {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[startIndex ... end]
+    }
+    subscript (bounds: PartialRangeUpTo<Int>) -> Substring {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return self[startIndex ..< end]
+    }
 }
 
 extension UIImage{
@@ -190,6 +271,17 @@ class roundLabel:UILabel{
             }
         }
     }
+    
+    @IBInspectable var label_Rotation: Double = 0 {
+        didSet {
+            rotateLabel(labelRotation: label_Rotation)
+            self.layoutIfNeeded()
+        }
+    }
+    
+    func rotateLabel(labelRotation: Double)  {
+        self.transform = CGAffineTransform(rotationAngle: CGFloat((Double.pi * 2) + labelRotation))
+    }
 }
 
 class RoundView:UIView{
@@ -295,6 +387,42 @@ class BorderTextView:UITextView{
             setAttributedTitle(attributedString, for: .normal)
         }
     }
+    
+    //---------------GRADIENT-------------------------
+    
+    @IBInspectable var firstColor: UIColor = UIColor.clear {
+        didSet {
+            updateView()
+        }
+    }
+    @IBInspectable var secondColor: UIColor = UIColor.clear {
+        didSet {
+            updateView()
+        }
+    }
+    
+    @IBInspectable var isHorizontal: Bool = true {
+        didSet {
+            updateView()
+        }
+    }
+    
+    override class var layerClass: AnyClass {
+        get {
+            return CAGradientLayer.self
+        }
+    }
+    func updateView() {
+        let layer = self.layer as! CAGradientLayer
+        layer.colors = [firstColor, secondColor].map{$0.cgColor}
+        if (self.isHorizontal) {
+            layer.startPoint = CGPoint(x: 0, y: 0.5)
+            layer.endPoint = CGPoint (x: 1, y: 0.5)
+        } else {
+            layer.startPoint = CGPoint(x: 0.5, y: 0)
+            layer.endPoint = CGPoint (x: 0.5, y: 1)
+        }
+    }
 }
 
 @IBDesignable class RoundImageView: UIImageView{
@@ -314,6 +442,26 @@ class BorderTextView:UITextView{
     @IBInspectable var borderColor: UIColor = UIColor.black {
         didSet{
             layer.borderColor = borderColor.cgColor
+        }
+    }
+    
+    @IBInspectable var blurImage: Bool = false{
+        didSet{
+            if blurImage{
+                updateImage()
+            }
+        }
+    }
+    
+    func updateImage(){
+        if self.image != nil{
+            let contentMode = self.contentMode
+            let imageToBlur:CIImage = CIImage(image: self.image!)!
+            let blurFilter:CIFilter = CIFilter(name: "CIGaussianBlur")!
+            blurFilter.setValue(imageToBlur, forKey: "inputImage")
+            let resultImage:CIImage = blurFilter.value(forKey: "outputImage")! as! CIImage
+            self.image = UIImage(ciImage: resultImage)
+            self.contentMode = contentMode
         }
     }
 }
@@ -372,6 +520,13 @@ extension UIColor{
     }
     
     struct FlexForum{
+        static var backgroundGrey: UIColor  { return UIColor(red: 48/255, green: 56/255, blue: 66/255, alpha: 1) }
+        static var flexRed: UIColor  { return UIColor(red: 216/255, green: 112/255, blue: 53/255, alpha: 1) }
+        static var errorRed: UIColor  { return UIColor(red: 255/255, green: 76/255, blue: 84/255, alpha: 1) }
+        static var navOrange: UIColor  { return UIColor(red: 232/255, green: 121/255, blue: 58/255, alpha: 1) }
+    }
+    
+    struct InstaLayer{
         static var backgroundGrey: UIColor  { return UIColor(red: 48/255, green: 56/255, blue: 66/255, alpha: 1) }
         static var flexRed: UIColor  { return UIColor(red: 216/255, green: 112/255, blue: 53/255, alpha: 1) }
         static var errorRed: UIColor  { return UIColor(red: 255/255, green: 76/255, blue: 84/255, alpha: 1) }
